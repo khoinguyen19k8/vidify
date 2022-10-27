@@ -3,12 +3,12 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "flask_server"
+name = "vidify"
 version = "0.0.1"
 authors = [
-	{name="Nguyen Quang Khoi", email="delvo1919@gmail.com"},
+	{name="Nguyen Quang Khoi", email="khoinguyen19k8@gmail.com"},
 ]
-description = "flask server"
+description = "Discord music bot"
 readme = "README.md"
 license = {file="LICENSE"}
 requires-python = ">=3.7"
@@ -19,5 +19,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/vnminh24/ourRecipes"
+"Homepage" = "https://github.com/khoinguyen19k8/vidify"
 
