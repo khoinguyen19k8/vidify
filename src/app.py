@@ -35,7 +35,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         super().__init__(source, volume)
         self.data = data
         self.title = data.get("title")
-        self.url = ""
+        self.url = data.get("url")
 
     @classmethod
     async def from_url(cls, url, *, loop=None, stream=False):
@@ -47,7 +47,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
             # take first item from a playlist
             data = data["entries"][0]
         filename = data["title"] if stream else ytdl.prepare_filename(data)
-        return filename
+        return cls(discord.FFmpegPCMAudio(filename, **ffmpeg_options), data=data)
 
 
 class Music(commands.Cog):
@@ -69,15 +69,7 @@ class Music(commands.Cog):
         await channel.connect()
 
     @commands.command()
-    async def leave(ctx):
-        voice_client = ctx.message.guild.voice_client
-        if voice_client.is_connected():
-            await voice_client.disconnect()
-        else:
-            await ctx.send("Vidify is not connected to a voice channel.")
-
-    @commands.command()
-    async def play(ctx, url):
+    async def play(self, ctx, *, url):
         """Streams from a url"""
 
         async with ctx.typing():
@@ -89,7 +81,7 @@ class Music(commands.Cog):
         await ctx.send(f"Now playing: {player.title}")
 
     @commands.command()
-    async def pause(ctx):
+    async def pause(self, ctx):
         voice_client = ctx.message.guild.voice_client
         if voice_client.is_playing():
             voice_client.pause()
@@ -97,7 +89,7 @@ class Music(commands.Cog):
             await ctx.send("Vidify is not playing")
 
     @commands.command()
-    async def resume(ctx):
+    async def resume(self, ctx):
         voice_client = ctx.message.guild.voice_client
         if voice_client.is_paused():
             voice_client.resume()
@@ -105,15 +97,23 @@ class Music(commands.Cog):
             await ctx.send("Vidify is not paused")
 
     @commands.command()
-    async def stop(ctx):
-        voice_client = ctx.message.guild.voice_client
-        if voice_client.is_playing():
-            voice_client.stop()
-        else:
-            await ctx.send("Vidify is not playing")
+    async def stop(self, ctx):
+        """Stops and disconnects the bot from voice"""
+        await ctx.voice_client.disconnect()
+
+    @play.before_invoke
+    async def ensure_voice(self, ctx):
+        if ctx.voice_client is None:
+            if ctx.author.voice:
+                await ctx.author.voice.channel.connect()
+            else:
+                await ctx.send("You are not connected to a voice channel.")
+                raise commands.CommandError("Author not connected to a voice channel.")
+        elif ctx.voice_client.is_playing():
+            ctx.voice_client.stop()
 
     @commands.command()
-    async def where_am_i(ctx):
+    async def where_am_i(self, ctx):
         owner = str(ctx.guild.owner)
         region = str(ctx.guild.region)
         guild_id = str(ctx.guild.id)
