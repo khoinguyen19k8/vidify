@@ -86,7 +86,7 @@ class Music(commands.Cog):
 
     @commands.command()
     async def play(self, ctx, *, url):
-        """Streams from a url"""
+        """Streams from a youtube url"""
 
         async with ctx.typing():
             player = await YTDLSource.from_url(url, loop=self.bot.loop, stream=True)
@@ -98,6 +98,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def pause(self, ctx):
+        """
+        Pauses the current playing track.
+        """
         voice_client = ctx.voice_client
         if voice_client.is_playing():
             voice_client.pause()
@@ -106,6 +109,9 @@ class Music(commands.Cog):
 
     @commands.command()
     async def resume(self, ctx):
+        """
+        Resumes from the currently paused track.
+        """
         voice_client = ctx.voice_client
         if voice_client.is_paused():
             voice_client.resume()
@@ -117,7 +123,6 @@ class Music(commands.Cog):
         """Stops and disconnects the bot from voice"""
         await ctx.voice_client.disconnect()
 
-    @yt.before_invoke
     @play.before_invoke
     async def ensure_voice(self, ctx):
         if ctx.voice_client is None:
