@@ -85,19 +85,6 @@ class Music(commands.Cog):
         await channel.connect()
 
     @commands.command()
-    async def yt(self, ctx, *, url):
-        """Plays from a url (almost anything youtube_dl supports)"""
-
-        async with ctx.typing():
-            player = await YTDLSource.from_url(url, loop=self.bot.loop)
-            await ctx.send("from_url succeeded")
-            ctx.voice_client.play(
-                player, after=lambda e: print(f"Player error: {e}") if e else None
-            )
-
-        await ctx.send(f"Now playing: {player.title}")
-
-    @commands.command()
     async def play(self, ctx, *, url):
         """Streams from a url"""
 
@@ -144,36 +131,6 @@ class Music(commands.Cog):
                 raise commands.CommandError("Author not connected to a voice channel.")
         elif ctx.voice_client.is_playing():
             ctx.voice_client.stop()
-
-    @commands.command()
-    async def where_am_i(self, ctx):
-        owner = str(ctx.guild.owner)
-        region = str(ctx.guild.region)
-        guild_id = str(ctx.guild.id)
-        memberCount = str(ctx.guild.member_count)
-        icon = str(ctx.guild.icon_url)
-        desc = ctx.guild.description
-
-        embed = discord.Embed(
-            title=ctx.guild.name + " Server Information",
-            description=desc,
-            color=discord.Color.blue(),
-        )
-        embed.set_thumbnail(url=icon)
-        embed.add_field(name="Owner", value=owner, inline=True)
-        embed.add_field(name="Server ID", value=guild_id, inline=True)
-        embed.add_field(name="Region", value=region, inline=True)
-        embed.add_field(name="Member Count", value=memberCount, inline=True)
-
-        await ctx.send(embed=embed)
-
-        members = []
-        async for member in ctx.guild.fetch_members(limit=150):
-            await ctx.send(
-                "Name : {}\t Status : {}\n Joined at {}".format(
-                    member.display_name, str(member.status), str(member.joined_at)
-                )
-            )
 
 
 intents = discord.Intents.all()
