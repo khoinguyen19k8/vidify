@@ -3,3 +3,5 @@ discord.py
 python-dotenv
 youtube-dl
 PyNaCl
+cffi --only-binary all;
+opuslib
