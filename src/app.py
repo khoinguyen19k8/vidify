@@ -2,11 +2,14 @@ import nacl
 import discord
 from discord.ext import commands, tasks
 import os
-from dotenv import load_dotenv
 import youtube_dl
 import asyncio
 
-load_dotenv()
+
+if not os.environ.get("PRODUCTION"):
+    from dotenv import load_dotenv
+
+    load_dotenv()
 
 DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 
