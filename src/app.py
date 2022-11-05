@@ -6,10 +6,9 @@ import youtube_dl
 import asyncio
 
 
-if not os.environ.get("PRODUCTION"):
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
 
-    load_dotenv()
+load_dotenv()
 
 DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 
