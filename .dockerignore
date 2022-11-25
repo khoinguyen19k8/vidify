@@ -1,0 +1,5 @@
+*.egg-info
+*.m4a
+*.sh
+*.pem
+scripts/
