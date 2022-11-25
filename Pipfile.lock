@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "66ea33cf2292831827ca980ab9b8f212bdabb0e47ff9761891fb4cbdc13e8338"
+            "sha256": "bd44f4573b5b82edb7b0b67ea7715e7caf0588905a42a7124a87a45e3a4eb204"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -243,10 +243,6 @@
             ],
             "index": "pypi",
             "version": "==2.0.1"
-        },
-        "flask-server": {
-            "path": ".",
-            "version": "==0.0.1"
         },
         "frozenlist": {
             "hashes": [
