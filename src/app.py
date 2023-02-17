@@ -2,7 +2,7 @@ import nacl
 import discord
 from discord.ext import commands, tasks
 import os
-import youtube_dl
+import yt_dlp
 import asyncio
 
 
@@ -13,11 +13,11 @@ load_dotenv()
 DISCORD_TOKEN = os.environ["DISCORD_TOKEN"]
 
 
-youtube_dl.utils.bug_reports_message = lambda: ""
+yt_dlp.utils.bug_reports_message = lambda: ""
 
 ytdl_format_options = {
     "format": "bestaudio/best",
-    "outtmpl": "%(extractor)s-%(id)s-%(title)s.%(ext)s",
+    "outtmpl": "%(extractor)s %(title)s [%(id)s].%(ext)s",
     "restrictfilenames": True,
     "noplaylist": True,
     "nocheckcertificate": True,
@@ -27,6 +27,12 @@ ytdl_format_options = {
     "no_warnings": True,
     "default_search": "auto",
     "source_address": "0.0.0.0",  # bind to ipv4 since ipv6 addresses cause issues sometimes
+    "postprocessors": [
+        {  # Extract audio using ffmpeg
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "m4a",
+        }
+    ],
 }
 
 ffmpeg_options = {
@@ -34,7 +40,7 @@ ffmpeg_options = {
     "options": "-vn",
 }
 
-ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
+ytdl = yt_dlp.YoutubeDL(ytdl_format_options)
 
 
 class YTDLSource(discord.PCMVolumeTransformer):
