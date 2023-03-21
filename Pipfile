@@ -12,8 +12,6 @@ certifi = "==2022.9.24"
 cffi = "==1.15.1"
 charset-normalizer = "==2.1.1"
 click = "==8.1.3"
-discord = "==2.0.0"
-"discord.py" = "==2.0.1"
 frozenlist = "==1.3.1"
 idna = "==3.4"
 multidict = "==6.0.2"
@@ -23,6 +21,7 @@ python-dotenv = "==0.21.0"
 python-version = "==0.0.2"
 yarl = "==1.8.1"
 yt-dlp = "*"
+"discord.py" = {extras = ["voice"], version = "*"}
 
 [dev-packages]
 black = "*"
