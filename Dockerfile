@@ -2,11 +2,11 @@ FROM python:3.9-slim
 
 RUN apt update
 RUN apt install -y ffmpeg
-RUN pip install pipenv
+RUN apt install -y libffi-dev
 
 WORKDIR /app
-COPY Pipfile Pipfile.lock ./
+COPY requirements.txt ./
 
-RUN pipenv install --system --deploy
+RUN pip install -r requirements.txt
 COPY . . 
 CMD ["python", "src/app.py"]
