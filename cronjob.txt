@@ -1,0 +1,1 @@
+0 */2 * * * docker stop vidify && docker start vidify
